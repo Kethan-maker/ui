@@ -1,0 +1,120 @@
+HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mortgage Calculator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="calculator-container">
+    <h2>Mortgage Calculator</h2>
+    <form id="mortgageForm">
+      <label>
+        Loan Amount ($):
+        <input type="number" id="loanAmount" required />
+      </label>
+      <label>
+        Annual Interest Rate (%):
+        <input type="number" step="0.01" id="interestRate" required />
+      </label>
+      <label>
+        Term (Years):
+        <input type="number" id="loanTerm" required />
+      </label>
+      <button type="submit">Calculate</button>
+    </form>
+    <div class="result" id="monthlyPayment"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+CSS
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f4f8;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.calculator-container {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+form label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+input[type="number"] {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.result {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+Javascript 
+
+
+document.getElementById("mortgageForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const principal = parseFloat(document.getElementById("loanAmount").value);
+  const annualRate = parseFloat(document.getElementById("interestRate").value);
+  const years = parseInt(document.getElementById("loanTerm").value);
+
+  if (!principal || !annualRate || !years) {
+    document.getElementById("monthlyPayment").textContent = "Please fill in all fields.";
+    return;
+  }
+
+  const monthlyRate = annualRate / 100 / 12;
+  const numberOfPayments = years * 12;
+
+  const monthlyPayment = (principal * monthlyRate) /
+    (1 - Math.pow(1 + monthlyRate, -numberOfPayments));
+
+  document.getElementById("monthlyPayment").textContent =
+    "Monthly Payment: $" + monthlyPayment.toFixed(2);
+});
